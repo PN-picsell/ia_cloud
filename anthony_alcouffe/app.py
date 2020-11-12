@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from main import img
 
 
@@ -12,7 +12,7 @@ def hello():
     url = request.args.get('url', default=None, type=str)
     name = request.args.get('name', default=None, type=str)
     array = img(image_path=name, url_path=url)
-    return str(array)
+    return jsonify(array)
 
 
 if __name__ == "__main__":
