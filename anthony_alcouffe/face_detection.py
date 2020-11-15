@@ -24,5 +24,4 @@ def img(image_path: str = None, url_path: str = None):
     dataframe_array = pd.DataFrame(columns=["x","y","w","h"])
     for (x, y, w, h) in faces:
         dataframe_array = dataframe_array.append({"x": x, "y": y, "w": w, "h": h}, ignore_index=True)
-    print(dataframe_array.to_json())
     return dataframe_array.to_json()
