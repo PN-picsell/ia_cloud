@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from main import img
+from face_detection import img
 
 
 app = Flask(__name__)
