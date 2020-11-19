@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+</head>
+<body>
+    <form action="{% url 'register'%}" method="post">
+    {% csrf_token %}
+    {{form.username}}
+    {{form.password1}}
+    {% for error in form.password1.errors %}
+        <p style="color: red">{{ error }}</p>
+    {% endfor %}
+    {{form.password2}}
+    {% for error in form.password2.errors %}
+        <p style="color: red">{{ error }}</p>
+    {% endfor %}
+    {{form.email}}
+    {{form.firstname}}
+    {{form.lastname}}
+    {{form.location}}
+    <button type="submit" class="">Register</button>
+    
+    </form>    
+</body>
+</html>

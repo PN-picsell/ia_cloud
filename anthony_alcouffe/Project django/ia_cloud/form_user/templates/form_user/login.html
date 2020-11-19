@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+</head>
+<body>
+    <form action="{% url 'login'%}" method="post">
+    {% csrf_token %}
+    {{form.username}}
+    {% for error in form.username.errors %}
+        <p style="color: red">{{ error }}</p>
+    {% endfor %}
+    {{form.password}}
+    {% for error in form.password.errors %}
+        <p style="color: red">{{ error }}</p>
+    {% endfor %}
+    <button type="submit" class="">login</button>
+    
+    </form>    
+</body>
+</html>
