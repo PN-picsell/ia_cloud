@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>Registration</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h2>Register form</h2>
+    <form method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
+        {{form.username}}
+        {{form.email}}
+        {{form.location}}
+        {{form.password1}}
+        {% for error in form.password1.errors %}
+            <p style="color: red">{{error}}</p>
+        {% endfor %}
+        {{form.password2}}
+        {% for error in form.password1.errors %}
+            <p style="color: red">{{error}}</p>
+        {% endfor %}
+        <button class="" type="submit">Sign up</button>
+    </form>
+</div>
+{% endblock content %}
