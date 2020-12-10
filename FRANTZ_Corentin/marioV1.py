@@ -18,7 +18,7 @@ MAP = [
 
 class TaxiEnv(discrete.DiscreteEnv):
     """
-    The Taxi Problem
+    The Taxi Problems
     from "Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition"
     by Tom Dietterich
     Description:
