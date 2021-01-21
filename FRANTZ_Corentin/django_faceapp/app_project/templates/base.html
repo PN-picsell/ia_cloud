@@ -22,11 +22,17 @@
             {% if user.is_authenticated %}
 
             {% else %}
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">Log in <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'signup' %}">Register<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'uploadImage' %}">Upload Image<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'detectImageAws' %}">AWS Rekognition<span class="sr-only">(current)</span></a>
             </li>
             {% endif %}
         

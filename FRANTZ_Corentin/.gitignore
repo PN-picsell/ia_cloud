@@ -1,3 +1,7 @@
 .vscode
 workspace.code-workspace
 a_z_handwritten_data.csv
+
+django_faceapp/django_faceapp/__pycache__/
+django_faceapp/app_project/migrations/__pycache__/
+django_faceapp/app_project/__pycache__/
