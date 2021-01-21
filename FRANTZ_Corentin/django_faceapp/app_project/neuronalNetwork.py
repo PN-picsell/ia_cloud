@@ -76,7 +76,7 @@ def convol(image, kernel):
     
     return output_image
 
-input_image = cv.imread("hello_world.png")
+input_image = cv.imread("/home/corentin/Bureau/IA_cloud/ia_cloud/FRANTZ_Corentin/django_faceapp/app_project/.media/hello_world.png")
 convolImage = cv.filter2D(input_image, -1, box_kernel)
 
 imgray = cv.cvtColor(convolImage, cv.COLOR_BGR2GRAY)
@@ -109,7 +109,8 @@ values
 
 plt.figure(figsize=(10,10))
 
-for i in range(25):
+length = len(array)
+for i in range(length):
     value = trained_model.predict_classes(array[i].reshape(1,28,28,1))
     plt.subplot(5,5,i+1)
     plt.xticks([])
