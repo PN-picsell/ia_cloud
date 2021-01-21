@@ -89,6 +89,13 @@ contours, hierarchy = cv.findContours(edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_S
 
 img = cv.drawContours(imgray, contours, -1, (0, 255,75), 2)
 
+def get_contour_precedence(contour, cols):
+    tolerance_factor = 200
+    origin = cv.boundingRect(contour)
+    return ((origin[1] // tolerance_factor) * tolerance_factor) * cols + origin[0]
+
+contours.sort(key=lambda x:get_contour_precedence(x, img.shape[1]))
+
 array = []
 ROI_number = 0
 for cnt in contours:
