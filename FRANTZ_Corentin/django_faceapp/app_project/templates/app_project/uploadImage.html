@@ -6,10 +6,17 @@
 
 
 {% block content %}
-    <form method = "post" enctype="multipart/form-data"> 
+    <!-- <form method = "post" enctype="multipart/form-data"> 
         {% csrf_token %} 
         {{ form.as_p }} 
         <button type="submit">Upload</button> 
-    </form> 
+    </form>  -->
+
+<form method="POST" action="{% url 'uploadImage' %}">
+    {% csrf_token %} 
+    <input id="userUrl" type="text" name="userUrl">
+
+    <button type="submit">Send</button>
+</form>
 {% endblock content %}
 
