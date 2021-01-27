@@ -12,7 +12,9 @@ viewer.
 import io
 import logging
 from PIL import Image, ImageDraw
+from boto.s3.connection import S3Connection
 
+s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
 logger = logging.getLogger(__name__)
 
 

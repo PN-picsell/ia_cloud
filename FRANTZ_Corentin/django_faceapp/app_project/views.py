@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, Image
+from .forms import SignUpForm, ImageForm
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate
@@ -40,13 +40,35 @@ def signup(request):
              'form': form,
         })
 
+def image_view(request): 
+  
+    if request.method == 'POST': 
+        now = "coucou"
+        url = request.POST['userUrl']
+        
+        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" + now
+        return HttpResponse(html) 
+    else: 
+        return render(request, 'app_project/uploadImage.html') 
+  
+  
+def successUpload(request): 
+    return HttpResponse('successfully uploaded') 
+
+def sendUrl(request):
+    if request.method == 'POST': 
+        now = "coucou"
+        url = request.POST['userUrl']
+        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" % now
+        return HttpResponse(html)
+
 
 class UserImage(TemplateView):
-    form = Image
+    form = ImageForm
     template_name = 'uploadImage.html'
 
     def post(self, request, *args, **kwargs):
-        form = Image(request.POST, request.FILES)
+        form = ImageForm(request.POST, request.FILES)
         if form:
             form.save()
             return HttpResponseRedirect(reverse_lazy('successImage', kwargs.get('pk')))
@@ -57,7 +79,10 @@ class UserImage(TemplateView):
         return self.post(request, *args)
     
 
-class EmpImageDisplay(DetailView):
-    model = Image
-    template_name = 'displayImage.html'
+
+def EmpImageDisplay(request): 
+    model = ImageForm
     context_object_name = 'use'
+    return (request, 'app_project/displayImage.html', locals())
+    
+

@@ -1,4 +1,5 @@
 import tensorflow as tf
+from skimage import io
 import keras
 import pandas as pd
 from tensorflow.keras import Sequential
@@ -76,8 +77,9 @@ def convol(image, kernel):
     
     return output_image
 
-input_image = cv.imread("/home/corentin/Bureau/IA_cloud/ia_cloud/FRANTZ_Corentin/django_faceapp/app_project/.media/hello_world.png")
-convolImage = cv.filter2D(input_image, -1, box_kernel)
+image = io.imread('https://cdn.pixabay.com/photo/2015/09/18/11/37/child-945422_960_720.jpg')
+input_image = cv.imread(image)
+convolImage = cv.filter2D(image, -1, box_kernel)
 
 imgray = cv.cvtColor(convolImage, cv.COLOR_BGR2GRAY)
 

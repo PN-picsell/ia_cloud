@@ -1,23 +1,8 @@
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: Apache-2.0
-
-"""
-Purpose
-
-Shows how to use the AWS SDK for Python (Boto3) with Amazon Rekognition to
-recognize people, objects, and text in images.
-
-The usage demo in this file uses images in the .media folder. If you run this code
-without cloning the GitHub repository, you must first download the image files from
-    https://github.com/awsdocs/aws-doc-sdk-examples/tree/master/python/example_code/rekognition/.media
-"""
-
 import logging
 from pprint import pprint
 import boto3
 from botocore.exceptions import ClientError
 import requests
-
 from rekognition_objects import (
     RekognitionFace, RekognitionCelebrity, RekognitionLabel,
     RekognitionModerationLabel, RekognitionText, show_bounding_boxes, show_polygons)
