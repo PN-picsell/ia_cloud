@@ -186,7 +186,7 @@ class RekognitionImage:
             return celebrities, other_faces
 
 
-def usage_demo():
+def usage_demo(url):
     print('-'*88)
     print("Welcome to the Amazon Rekognition image detection demo!")
     print('-'*88)
@@ -241,14 +241,14 @@ def usage_demo():
     #     [[celeb.face.bounding_box for celeb in celebs]], ['aqua'])
     # input("Press Enter to continue.")
 
-    # girl_image_response = requests.get(one_girl_url)
-    # girl_image = RekognitionImage(
-    #     {'Bytes': girl_image_response.content}, "one-girl", rekognition_client)
-    # group_image_response = requests.get(three_girls_url)
-    # group_image = RekognitionImage(
-    #     {'Bytes': group_image_response.content}, "three-girls", rekognition_client)
-    # print("Comparing reference face to group of faces...")
-    # matches, unmatches = girl_image.compare_faces(group_image, 80)
+    girl_image_response = requests.get(url)
+    girl_image = RekognitionImage(
+        {'Bytes': girl_image_response.content}, "one-girl", rekognition_client)
+    #group_image_response = requests.get(three_girls_url)
+    #group_image = RekognitionImage(
+        #{'Bytes': group_image_response.content}, "three-girls", rekognition_client)
+    #print("Comparing reference face to group of faces...")
+    #matches, unmatches = girl_image.compare_faces(group_image, 80)
     # print(f"Found {len(matches)} face matching the reference face.")
     # show_bounding_boxes(
     #     group_image.image['Bytes'], [[match.bounding_box for match in matches]],
@@ -263,18 +263,19 @@ def usage_demo():
     #     pprint(label.to_dict())
     # input("Press Enter to continue.")
 
-    book_image = RekognitionImage.from_file(book_file_name, rekognition_client)
-    print(f"Detecting text in {book_image.image_name}...")
-    texts = book_image.detect_text()
+    # book_image = RekognitionImage.from_file(book_file_name, rekognition_client)
+    # print(f"Detecting text in {book_image.image_name}...")
+    image = RekognitionImage.fr(book_file_name, rekognition_client)
+    texts = girl_image_response.detect_text()
     print(f"Found {len(texts)} text instances. Here are the first seven:")
     for text in texts[:7]:
         pprint(text.to_dict())
     show_polygons(
-        book_image.image['Bytes'], [text.geometry['Polygon'] for text in texts], 'aqua')
+        girl_image_response.image['Bytes'], [text.geometry['Polygon'] for text in texts], 'aqua')
 
-    print("Thanks for watching!")
-    print('-'*88)
+    # print("Thanks for watching!")
+    # print('-'*88)
 
 
 if __name__ == '__main__':
-    usage_demo()
+    usage_demo("https://i.ibb.co/XbNhmFK/hello-world.png")

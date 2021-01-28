@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate
 from django.views.generic import DetailView
+from .neuronalNetwork import *
+from .awsApi import *
 
 
 # Create your views here
@@ -43,11 +45,10 @@ def signup(request):
 def image_view(request): 
   
     if request.method == 'POST': 
-        now = "coucou"
         url = request.POST['userUrl']
-        
+        now = WordDetection(url)
         html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" + now
-        return HttpResponse(html) 
+        return HttpResponse(html)
     else: 
         return render(request, 'app_project/uploadImage.html') 
   
@@ -57,9 +58,10 @@ def successUpload(request):
 
 def sendUrl(request):
     if request.method == 'POST': 
-        now = "coucou"
+       
         url = request.POST['userUrl']
-        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" % now
+        now = WordDetection(url)
+        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" +"</br>"+ now
         return HttpResponse(html)
 
 
@@ -82,7 +84,7 @@ class UserImage(TemplateView):
 
 def EmpImageDisplay(request): 
     if request.method == 'POST': 
-        now = "coucou"
+        now = "c"
         url = request.POST['userUrl']
             
         html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" + now

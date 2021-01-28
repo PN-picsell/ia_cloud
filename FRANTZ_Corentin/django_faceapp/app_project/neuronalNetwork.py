@@ -83,69 +83,83 @@ def convol(image, kernel):
 #image = io.imread('https://cdn.pixabay.com/photo/2015/09/18/11/37/child-945422_960_720.jpg')
 #input_image = cv.imread(image)
 
-r = requests.get('https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1500655149l/34879754.jpg', stream=True)
-if r.status_code == 200:
-    with open("img.png", 'wb') as f:
-        r.raw.decode_content = True
-        shutil.copyfileobj(r.raw, f)
+def WordDetection (url):
 
-input_image = cv.imread("img.png")
-convolImage = cv.filter2D(input_image, -1, box_kernel)
-#plt.imshow(convolImage) 
-#plt.show()  
-imgray = cv.cvtColor(convolImage, cv.COLOR_BGR2GRAY)
-#plt.imshow(imgray, cmap='gray') 
-#plt.show()  
-# cv.Canny permet d'appliquer des filtres sur l'image
-edges = cv.Canny(imgray, 400, 255)
+    r = requests.get(url, stream=True)
+    if r.status_code == 200:
+        with open("img.png", 'wb') as f:
+            r.raw.decode_content = True
+            shutil.copyfileobj(r.raw, f)
 
-# findContour récupère les positions des coutours et les insère dans un tableau
-contours, hierarchy = cv.findContours(edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    input_image = cv.imread("img.png")
+    convolImage = cv.filter2D(input_image, -1, box_kernel)
+    #plt.imshow(convolImage) 
+    #plt.show()  
+    imgray = cv.cvtColor(convolImage, cv.COLOR_BGR2GRAY)
+    #plt.imshow(imgray, cmap='gray') 
+    #plt.show()  
+    # cv.Canny permet d'appliquer des filtres sur l'image
+    edges = cv.Canny(imgray, 400, 255)
 
-img = cv.drawContours(imgray, contours, -1, (0, 255,75), 2)
+    # findContour récupère les positions des coutours et les insère dans un tableau
+    contours, hierarchy = cv.findContours(edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-def get_contour_precedence(contour, cols):
-    tolerance_factor = 200
-    origin = cv.boundingRect(contour)
-    return ((origin[1] // tolerance_factor) * tolerance_factor) * cols + origin[0]
+    img = cv.drawContours(imgray, contours, -1, (0, 255,75), 2)
 
-contours.sort(key=lambda x:get_contour_precedence(x, img.shape[1]))
+    def get_contour_precedence(contour, cols):
+        tolerance_factor = 200
+        origin = cv.boundingRect(contour)
+        return ((origin[1] // tolerance_factor) * tolerance_factor) * cols + origin[0]
 
-array = []
-ROI_number = 0
-for cnt in contours:
-    x, y, w, h = cv.boundingRect(cnt)
-    print(x, y, w, h)
-    print(imgray.shape)
-    if y>3 and x>3:
-        ROI = imgray[y-3:y+h+3, x-3:x+w+3]
-    else:
-        ROI = imgray[y:y+h, x:x+w]
-    # bitwise inverse les valeurs des pixels (0->255; 255->0)
-    # + passage des valeurs de int à float car notre modèle est entrainé sur float
-    ROI = cv.bitwise_not(ROI).astype(np.float64)
-    ret,ROI = cv.threshold(ROI,127,255,cv.THRESH_BINARY)
-    out = np.array([cv.resize(ROI, (28,28))])
-    array.append(out.reshape(28,28,1))
-    ROI_number += 1
+    contours.sort(key=lambda x:get_contour_precedence(x, img.shape[1]))
 
-values = []
-for elem in array: 
-    values.append(trained_model.predict_classes(elem.reshape(1,28,28,1)))
-values
+    array = []
+    ROI_number = 0
+    for cnt in contours:
+        x, y, w, h = cv.boundingRect(cnt)
+        print(x, y, w, h)
+        print(imgray.shape)
+        if y>3 and x>3:
+            ROI = imgray[y-3:y+h+3, x-3:x+w+3]
+        else:
+            ROI = imgray[y:y+h, x:x+w]
+        # bitwise inverse les valeurs des pixels (0->255; 255->0)
+        # + passage des valeurs de int à float car notre modèle est entrainé sur float
+        ROI = cv.bitwise_not(ROI).astype(np.float64)
+        ret,ROI = cv.threshold(ROI,127,255,cv.THRESH_BINARY)
+        out = np.array([cv.resize(ROI, (28,28))])
+        array.append(out.reshape(28,28,1))
+        ROI_number += 1
 
-plt.figure(figsize=(10,10))
+    values = []
+    for elem in array: 
+        values.append(trained_model.predict_classes(elem.reshape(1,28,28,1)))
+    values
+    #print(values[0])
+    string = ""
+    for i in values:
+        #print (class_names[i[0]])
+        string += class_names[i[0]]
+    print(string)
 
-length = len(array)
-for i in range(24):
-    value = trained_model.predict_classes(array[i].reshape(1,28,28,1))
-    plt.subplot(5,5,i+1)
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(array[i].reshape(28,28,1), cmap=plt.cm.binary, interpolation='nearest')
-    plt.xlabel(class_names[value[0]])
+
+    return string
+
+
+
+
+#plt.figure(figsize=(10,10))
+
+#length = len(array)
+#for i in range(length):
+    #value = trained_model.predict_classes(array[i].reshape(1,28,28,1))
+    #plt.subplot(5,5,i+1)
+    #plt.xticks([])
+    #plt.yticks([])
+    #plt.grid(False)
+    #plt.imshow(array[i].reshape(28,28,1), cmap=plt.cm.binary, interpolation='nearest')
+    #plt.xlabel(class_names[value[0]])
     #print(value[0])
     #print(class_names[value[0]])
     
-plt.show()
+#plt.show()
