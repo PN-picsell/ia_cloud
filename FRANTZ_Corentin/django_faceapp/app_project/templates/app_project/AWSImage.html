@@ -1,0 +1,14 @@
+  {% extends 'base.html' %}
+
+    {% block title %}AWS Reckkognition{% endblock %}
+
+  {% block content %}
+
+  <form method="POST" action="{% url 'uploadImage' %}">
+    {% csrf_token %} 
+    <input id="userUrl" type="text" name="userUrl">
+
+    <button type="submit">Send</button>
+  </form>
+
+  {% endblock %}

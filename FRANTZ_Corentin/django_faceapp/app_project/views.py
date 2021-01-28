@@ -81,8 +81,13 @@ class UserImage(TemplateView):
 
 
 def EmpImageDisplay(request): 
-    model = ImageForm
-    context_object_name = 'use'
-    return (request, 'app_project/displayImage.html', locals())
-    
+    if request.method == 'POST': 
+        now = "coucou"
+        url = request.POST['userUrl']
+            
+        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" + now
+        return HttpResponse(html) 
+    else: 
+        return render(request, 'app_project/AWSImage.html') 
+        
 

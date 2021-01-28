@@ -1,5 +1,8 @@
 import tensorflow as tf
 from skimage import io
+import requests
+import shutil
+import urllib
 import keras
 import pandas as pd
 from tensorflow.keras import Sequential
@@ -77,12 +80,22 @@ def convol(image, kernel):
     
     return output_image
 
-image = io.imread('https://cdn.pixabay.com/photo/2015/09/18/11/37/child-945422_960_720.jpg')
-input_image = cv.imread(image)
-convolImage = cv.filter2D(image, -1, box_kernel)
+#image = io.imread('https://cdn.pixabay.com/photo/2015/09/18/11/37/child-945422_960_720.jpg')
+#input_image = cv.imread(image)
 
+r = requests.get('https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1500655149l/34879754.jpg', stream=True)
+if r.status_code == 200:
+    with open("img.png", 'wb') as f:
+        r.raw.decode_content = True
+        shutil.copyfileobj(r.raw, f)
+
+input_image = cv.imread("img.png")
+convolImage = cv.filter2D(input_image, -1, box_kernel)
+#plt.imshow(convolImage) 
+#plt.show()  
 imgray = cv.cvtColor(convolImage, cv.COLOR_BGR2GRAY)
-
+#plt.imshow(imgray, cmap='gray') 
+#plt.show()  
 # cv.Canny permet d'appliquer des filtres sur l'image
 edges = cv.Canny(imgray, 400, 255)
 
@@ -102,10 +115,15 @@ array = []
 ROI_number = 0
 for cnt in contours:
     x, y, w, h = cv.boundingRect(cnt)
-    ROI = imgray[y-3:y+h+3, x-3:x+w+3]
+    print(x, y, w, h)
+    print(imgray.shape)
+    if y>3 and x>3:
+        ROI = imgray[y-3:y+h+3, x-3:x+w+3]
+    else:
+        ROI = imgray[y:y+h, x:x+w]
     # bitwise inverse les valeurs des pixels (0->255; 255->0)
     # + passage des valeurs de int à float car notre modèle est entrainé sur float
-    ROI = cv.bitwise_not(ROI).astype(np.float32)
+    ROI = cv.bitwise_not(ROI).astype(np.float64)
     ret,ROI = cv.threshold(ROI,127,255,cv.THRESH_BINARY)
     out = np.array([cv.resize(ROI, (28,28))])
     array.append(out.reshape(28,28,1))
@@ -119,7 +137,7 @@ values
 plt.figure(figsize=(10,10))
 
 length = len(array)
-for i in range(length):
+for i in range(24):
     value = trained_model.predict_classes(array[i].reshape(1,28,28,1))
     plt.subplot(5,5,i+1)
     plt.xticks([])
