@@ -93,12 +93,9 @@ def WordDetection (url):
 
     input_image = cv.imread("img.png")
     convolImage = cv.filter2D(input_image, -1, box_kernel)
-    #plt.imshow(convolImage) 
-    #plt.show()  
+
     imgray = cv.cvtColor(convolImage, cv.COLOR_BGR2GRAY)
-    #plt.imshow(imgray, cmap='gray') 
-    #plt.show()  
-    # cv.Canny permet d'appliquer des filtres sur l'image
+
     edges = cv.Canny(imgray, 400, 255)
 
     # findContour récupère les positions des coutours et les insère dans un tableau
@@ -144,22 +141,3 @@ def WordDetection (url):
 
 
     return string
-
-
-
-
-#plt.figure(figsize=(10,10))
-
-#length = len(array)
-#for i in range(length):
-    #value = trained_model.predict_classes(array[i].reshape(1,28,28,1))
-    #plt.subplot(5,5,i+1)
-    #plt.xticks([])
-    #plt.yticks([])
-    #plt.grid(False)
-    #plt.imshow(array[i].reshape(28,28,1), cmap=plt.cm.binary, interpolation='nearest')
-    #plt.xlabel(class_names[value[0]])
-    #print(value[0])
-    #print(class_names[value[0]])
-    
-#plt.show()
