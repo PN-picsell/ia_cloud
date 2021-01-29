@@ -84,10 +84,9 @@ class UserImage(TemplateView):
 
 def EmpImageDisplay(request): 
     if request.method == 'POST': 
-        now = "c"
         url = request.POST['userUrl']
-            
-        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" + now
+        textDetected = awsRekognition(url)    
+        html = "<img src=\""+url+"\" alt=\"Italian Trulli\">" + textDetected
         return HttpResponse(html) 
     else: 
         return render(request, 'app_project/AWSImage.html') 

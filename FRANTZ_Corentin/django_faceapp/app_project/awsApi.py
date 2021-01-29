@@ -27,4 +27,4 @@ def awsRekognition(url):
 
 
 if __name__ == "__main__":
-    main('https://i.ibb.co/XbNhmFK/hello-world.png')
+    awsRekognition('https://i.ibb.co/XbNhmFK/hello-world.png')
